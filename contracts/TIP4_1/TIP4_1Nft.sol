@@ -13,7 +13,7 @@ import './interfaces/INftChangeManager.sol';
 
 import './errors/NftErrors.sol';
 
-import '../../utils/TIP6/TIP6.sol';
+import '../TIP6/TIP6.sol';
 
 
 /// @title One of the required contracts of an TIP4-1(Non-Fungible Token Standard) compliant technology.

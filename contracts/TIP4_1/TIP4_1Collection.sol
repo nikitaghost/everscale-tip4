@@ -5,8 +5,8 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 
+import '../access/OwnableExternal.sol';
 import './interfaces/ITIP4_1Collection.sol';
-import '../../extensions/CollectionExtensions/OwnableExternal.sol';
 import './errors/CollectionErrors.sol';
 import './TIP4_1Nft.sol';
 
@@ -16,52 +16,11 @@ contract TIP4_1Collection is ITIP4_1Collection, OwnableExternal {
     TvmCell _codeNft;
     uint128 _totalSupply;
 
-    /// _remainOnNft - the number of crystals that will remain after the entire mint 
-    /// process is completed on the Nft contract
-    // uint128 _remainOnNft = 0.3 ton;
-
     constructor(TvmCell codeNft, uint256 ownerPubkey) OwnableExternal(ownerPubkey) public {
         tvm.accept();
 
         _codeNft = codeNft;
     }
-
-    // function mintNft() external virtual {
-    //     require(msg.value > _remainOnNft + 0.1 ton, CollectionErrors.value_is_less_than_required);
-    //     tvm.rawReserve(msg.value, 1);
-
-    //     TvmCell codeNft = _buildNftCode(address(this));
-    //     TvmCell stateNft = _buildNftState(codeNft, uint256(_totalSupply));
-    //     address nftAddr = new TIP4_1Nft{
-    //         stateInit: stateNft,
-    //         value: msg.value
-    //     }(
-    //         msg.sender,
-    //         msg.sender,
-    //         _remainOnNft
-    //     ); 
-
-    //     emit NftCreated(
-    //         _totalSupply, 
-    //         nftAddr,
-    //         msg.sender,
-    //         msg.sender, 
-    //         msg.sender
-    //     );
-
-    //     _totalSupply++;
-
-    //     msg.sender.transfer({value: 0, flag: 128});
-    // }
-
-    // function withdraw(address to, uint128 value) external virtual pure onlyOwner {
-    //     require(address(this).balance > value, CollectionErrors.value_is_greater_than_the_balance);
-    //     to.transfer(value, true, 0);
-    // }
-
-    // function setRemainOnNft(uint128 remainOnNft) external virtual onlyOwner {
-    //     _remainOnNft = remainOnNft;
-    // } 
 
     function totalSupply() external view virtual override responsible returns (uint128 count) {
         return {value: 0, flag: 64, bounce: false} (_totalSupply);
