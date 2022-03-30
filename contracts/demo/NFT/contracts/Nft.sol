@@ -8,33 +8,35 @@ pragma AbiHeader pubkey;
 
 
 import '../../../TIP4_1/TIP4_1Nft.sol';
-import '../../../TIP4_2/TIP4_2Nft.sol';
+import '../../../TIP4_3/TIP4_3Nft.sol';
 
-contract Nft is TIP4_1Nft, TIP4_2Nft {
-
-    string _name;
+contract Nft is TIP4_1Nft, TIP4_3Nft {
 
     constructor(
         address owner,
         address sendGasTo,
         uint128 remainOnNft,
-        string json,
-        string name
+        uint128 indexDeployValue,
+        uint128 indexDestroyValue,
+        TvmCell codeIndex
     ) TIP4_1Nft(
         owner,
         sendGasTo,
         remainOnNft
-    ) TIP4_2Nft (
-        json
+    ) TIP4_3Nft (
+        indexDeployValue,
+        indexDestroyValue,
+        codeIndex
     ) public {
         tvm.accept();
-
-        _name = name;
-
     }
-    
-    function getName() external view responsible returns (string name) {
-        return {value: 0, flag: 64} (_name);
+
+    function changeOwner(
+        address newOwner, 
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) public virtual override(TIP4_1Nft, TIP4_3Nft) onlyManager {
+        TIP4_3Nft.changeOwner(newOwner, sendGasTo, callbacks);
     }
 
 }
