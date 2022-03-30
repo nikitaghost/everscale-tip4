@@ -5,11 +5,11 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 
-import '../../../contracts/TIP4_1/TIP4_1Collection.sol';
+import '../../../contracts/TIP4_2/TIP4_2Collection.sol';
 import '../../../contracts/access/OwnableExternal.sol';
 import './Nft.sol';
 
-contract Collection is TIP4_1Collection, OwnableExternal {
+contract Collection is TIP4_2Collection, OwnableExternal {
 
     /// _remainOnNft - the number of crystals that will remain after the entire mint 
     /// process is completed on the Nft contract
@@ -17,16 +17,21 @@ contract Collection is TIP4_1Collection, OwnableExternal {
 
     constructor(
         TvmCell codeNft, 
-        uint256 ownerPubkey
+        uint256 ownerPubkey,
+        string json
     ) OwnableExternal(
         ownerPubkey
     ) TIP4_1Collection (
         codeNft
+    ) TIP4_2Collection (
+        json
     ) public {
         tvm.accept();
     }
 
-    function mintNft() external virtual {
+    function mintNft(
+        string json
+    ) external virtual {
         require(msg.value > _remainOnNft + 0.1 ton, CollectionErrors.value_is_less_than_required);
         tvm.rawReserve(msg.value, 1);
 
@@ -42,7 +47,8 @@ contract Collection is TIP4_1Collection, OwnableExternal {
         }(
             msg.sender,
             msg.sender,
-            _remainOnNft
+            _remainOnNft,
+            json
         ); 
 
         emit NftCreated(
