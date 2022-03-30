@@ -93,6 +93,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
 
         address oldOwner = _owner;
         _changeOwner(newOwner);
+        _changeManager(newOwner);
 
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeOwner(dest).onNftChangeOwner{
@@ -117,7 +118,10 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
     ) internal {
         address oldOwner = _owner;
         _owner = newOwner;
-        emit OwnerChanged(oldOwner, newOwner);
+        
+        if (oldOwner != newOwner) {
+            emit OwnerChanged(oldOwner, newOwner);
+        }
     }
 
 
@@ -168,7 +172,9 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
     ) internal {
         address oldManager = _manager;
         _manager = newManager;
-        emit ManagerChanged(oldManager, newManager);
+        if (oldManager != newManager) {
+            emit ManagerChanged(oldManager, newManager);
+        }
     }
 
     /// @notice Returns the main parameters of the token.
