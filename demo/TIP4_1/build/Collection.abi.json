@@ -7,8 +7,6 @@
 			"name": "constructor",
 			"inputs": [
 				{"name":"codeNft","type":"cell"},
-				{"name":"codeIndex","type":"cell"},
-				{"name":"codeIndexBasis","type":"cell"},
 				{"name":"ownerPubkey","type":"uint256"}
 			],
 			"outputs": [
@@ -27,68 +25,6 @@
 				{"name":"remainOnNft","type":"uint128"}
 			],
 			"outputs": [
-			]
-		},
-		{
-			"name": "deployIndexBasis",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"indexBasis","type":"address"}
-			]
-		},
-		{
-			"name": "setIndexBasisCode",
-			"inputs": [
-				{"name":"codeIndexBasis","type":"cell"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "indexBasisCode",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"code","type":"cell"}
-			]
-		},
-		{
-			"name": "indexBasisCodeHash",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"hash","type":"uint256"}
-			]
-		},
-		{
-			"name": "resolveIndexBasis",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"indexBasis","type":"address"}
-			]
-		},
-		{
-			"name": "indexCode",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"code","type":"cell"}
-			]
-		},
-		{
-			"name": "indexCodeHash",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"hash","type":"uint256"}
 			]
 		},
 		{
@@ -220,11 +156,6 @@
 		{"name":"_codeNft","type":"cell"},
 		{"name":"_totalSupply","type":"uint128"},
 		{"name":"_owner","type":"uint256"},
-		{"name":"_codeIndex","type":"cell"},
-		{"name":"_codeIndexBasis","type":"cell"},
-		{"name":"_indexDeployValue","type":"uint128"},
-		{"name":"_indexDestroyValue","type":"uint128"},
-		{"name":"_deployIndexBasisValue","type":"uint128"},
 		{"name":"_remainOnNft","type":"uint128"}
 	]
 }

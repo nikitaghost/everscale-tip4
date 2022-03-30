@@ -38,6 +38,8 @@ abstract contract TIP4_3Nft is TIP4_1Nft, ITIP4_3NFT {
             bytes4(tvm.functionId(ITIP4_3NFT.resolveIndex)) 
         ] = true;
 
+        _deployIndex();
+
     }
 
     function changeOwner(

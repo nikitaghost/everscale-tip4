@@ -93,7 +93,6 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
 
         address oldOwner = _owner;
         _changeOwner(newOwner);
-        _changeManager(newOwner);
 
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeOwner(dest).onNftChangeOwner{
@@ -118,6 +117,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
     ) internal {
         address oldOwner = _owner;
         _owner = newOwner;
+        _changeManager(newOwner);
         
         if (oldOwner != newOwner) {
             emit OwnerChanged(oldOwner, newOwner);
