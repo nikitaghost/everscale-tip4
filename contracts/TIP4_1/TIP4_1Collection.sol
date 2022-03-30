@@ -5,21 +5,29 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 
-import '../access/OwnableExternal.sol';
+import '../TIP6/TIP6.sol';
 import './interfaces/ITIP4_1Collection.sol';
 import './errors/CollectionErrors.sol';
 import './TIP4_1Nft.sol';
 
 
-contract TIP4_1Collection is ITIP4_1Collection, OwnableExternal {
+contract TIP4_1Collection is ITIP4_1Collection, TIP6 {
     
     TvmCell _codeNft;
     uint128 _totalSupply;
 
-    constructor(TvmCell codeNft, uint256 ownerPubkey) OwnableExternal(ownerPubkey) public {
+    constructor(TvmCell codeNft) public {
         tvm.accept();
 
         _codeNft = codeNft;
+
+        _supportedInterfaces[ bytes4(tvm.functionId(ITIP6.supportsInterface)) ] = true;
+        _supportedInterfaces[
+            bytes4(tvm.functionId(ITIP4_1Collection.totalSupply)) ^
+            bytes4(tvm.functionId(ITIP4_1Collection.nftCode)) ^
+            bytes4(tvm.functionId(ITIP4_1Collection.nftCodeHash)) ^
+            bytes4(tvm.functionId(ITIP4_1Collection.nftAddress))
+        ] = true;
     }
 
     function totalSupply() external view virtual override responsible returns (uint128 count) {
