@@ -25,6 +25,10 @@ abstract contract TIP4_2Collection is TIP4_1Collection, ITIP4_2JSON_Metadata {
         tvm.accept();
 
         _json = json;
+
+        _supportedInterfaces[
+            bytes4(tvm.functionId(ITIP4_2JSON_Metadata.getJson))
+        ] = true;
     }
 
     /// See interfaces/ITIP4_2JSON_Metadata.sol
