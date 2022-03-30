@@ -52,7 +52,7 @@ contract Collection is TIP4_1Collection, OwnableExternal {
             msg.sender, 
             msg.sender
         );
-
+    
     }
 
     function setRemainOnNft(uint128 remainOnNft) external virtual onlyOwner {
