@@ -23,10 +23,6 @@ abstract contract TIP4_3Collection is TIP4_1Collection, ITIP4_3Collection, Ownab
     uint128 _indexDestroyValue = 0.1 ton;
     uint128 _deployIndexBasisValue = 0.4 ton;
 
-    /// _remainOnNft - the number of crystals that will remain after the entire mint 
-    /// process is completed on the Nft contract
-    // uint128 _remainOnNft = 0.3 ton;
-
     constructor(
         TvmCell codeIndex,
         TvmCell codeIndexBasis,
@@ -113,6 +109,7 @@ abstract contract TIP4_3Collection is TIP4_1Collection, ITIP4_3Collection, Ownab
         address owner
     ) internal virtual view returns (TvmCell) {
         TvmBuilder salt;
+        salt.store("nft");
         salt.store(collection);
         salt.store(owner);
         return tvm.setCodeSalt(_codeIndex, salt.toCell());

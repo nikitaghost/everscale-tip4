@@ -90,6 +90,7 @@ abstract contract TIP4_3Nft is TIP4_1Nft, ITIP4_3NFT {
         address owner
     ) internal virtual view returns (TvmCell) {
         TvmBuilder salt;
+        salt.store("nft");
         salt.store(collection);
         salt.store(owner);
         return tvm.setCodeSalt(_codeIndex, salt.toCell());
