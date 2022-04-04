@@ -6,8 +6,7 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"codeNft","type":"cell"},
-				{"name":"ownerPubkey","type":"uint256"}
+				{"name":"codeNft","type":"cell"}
 			],
 			"outputs": [
 			]
@@ -50,55 +49,19 @@
 			]
 		},
 		{
-			"name": "resolveCodeHashNft",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"codeHashData","type":"uint256"}
-			]
-		},
-		{
-			"name": "resolveNft",
+			"name": "supportsInterface",
 			"inputs": [
 				{"name":"answerId","type":"uint32"},
-				{"name":"addrRoot","type":"address"},
-				{"name":"id","type":"uint256"}
+				{"name":"interfaceID","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"addrNft","type":"address"}
-			]
-		},
-		{
-			"name": "owner",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"pubkey","type":"uint256"}
-			]
-		},
-		{
-			"name": "transferOwnership",
-			"inputs": [
-				{"name":"newOwner","type":"uint256"}
-			],
-			"outputs": [
+				{"name":"value0","type":"bool"}
 			]
 		}
 	],
 	"data": [
 	],
 	"events": [
-		{
-			"name": "OwnershipTransferred",
-			"inputs": [
-				{"name":"oldOwner","type":"uint256"},
-				{"name":"newOwner","type":"uint256"}
-			],
-			"outputs": [
-			]
-		},
 		{
 			"name": "NftCreated",
 			"inputs": [
@@ -127,7 +90,7 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"_owner","type":"uint256"},
+		{"name":"_supportedInterfaces","type":"optional(cell)"},
 		{"name":"_codeNft","type":"cell"},
 		{"name":"_totalSupply","type":"uint128"}
 	]

@@ -52,7 +52,7 @@ contract Storage is ITIP4_4Storage {
             _active = true;
             ITIP4_4NFT(_nft).onStorageFillComplete{value: 0, flag: 128}(msg.sender);
         } else {
-            msg.sender.transfer({value: 0, flag: 64});
+            msg.sender.transfer({value: 0, flag: 64 + 2});
         }
     }
 

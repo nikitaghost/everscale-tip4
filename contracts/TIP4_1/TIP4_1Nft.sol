@@ -1,6 +1,7 @@
-// ItGold.io Contracts (v1.0.0) 
-
+/// We recommend using the compiler version 0.58.1. 
+/// You can use other versions, but we do not guarantee compatibility of the compiler version.
 pragma ton-solidity = 0.58.1;
+
 
 pragma AbiHeader expire;
 pragma AbiHeader time;
@@ -17,6 +18,7 @@ import '../TIP6/TIP6.sol';
 
 
 /// @title One of the required contracts of an TIP4-1(Non-Fungible Token Standard) compliant technology.
+/// You can read more about the technology here (https://github.com/nftalliance/docs/blob/main/src/Standard/TIP-4/1.md)
 /// For detect what interfaces a smart contract implements used TIP-6.1 standard. ...
 /// ... Read more here (https://github.com/nftalliance/docs/blob/main/src/Standard/TIP-6/1.md)
 contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
@@ -66,7 +68,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
 
         emit NftCreated(_id, _owner, _manager, _collection);
 
-        sendGasTo.transfer({value: 0, flag: 128});
+        sendGasTo.transfer({value: 0, flag: 128 + 2});
     }
      
     /// @notice Transfers ownership to another account
@@ -96,7 +98,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeOwner(dest).onNftChangeOwner{
                 value: p.value,
-                flag: 0,
+                flag: 0 + 1,
                 bounce: false
             }(_id, oldOwner, _manager, newOwner, _manager, _collection, sendGasTo, p.payload);
         }
@@ -104,7 +106,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         if (sendGasTo.value != 0) {
             sendGasTo.transfer({
                 value: 0,
-                flag: 128,
+                flag: 128 + 2,
                 bounce: false
             });
         }
@@ -151,7 +153,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeManager(dest).onNftChangeManager{
                 value: p.value,
-                flag: 0,
+                flag: 0 + 1,
                 bounce: false
             }(_id, _owner, oldManager, _owner, newManager, _collection, sendGasTo, p.payload);
         }
@@ -159,7 +161,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         if (sendGasTo.value != 0) {
             sendGasTo.transfer({
                 value: 0,
-                flag: 128,
+                flag: 128 + 2,
                 bounce: false
             });
         }
