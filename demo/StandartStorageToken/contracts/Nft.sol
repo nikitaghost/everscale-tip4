@@ -10,15 +10,11 @@ pragma AbiHeader pubkey;
 import '../../../contracts/TIP4_1/TIP4_1Nft.sol';
 import '../../../contracts/TIP4_3/TIP4_3Nft.sol';
 import '../../../contracts/TIP4_4/TIP4_4Nft.sol';
+import '../../../contracts/TIP4_4/Storage.sol';
+import './interfaces/ITokenBurned.sol';
 
 
 contract Nft is TIP4_1Nft, TIP4_3Nft, TIP4_4Nft {
-
-    /// Author address
-    address _author;
-
-    /// Mapping royalty recipient to royalty value
-    uint8 _royalty;
 
     /// Token params
     string _name;
@@ -27,11 +23,9 @@ contract Nft is TIP4_1Nft, TIP4_3Nft, TIP4_4Nft {
     constructor(
         address owner,
         address sendGasTo,
-        address author,
         uint128 remainOnNft,
         string name,
         string description,
-        uint8 royalty,
         uint128 indexDeployValue,
         uint128 indexDestroyValue,
         TvmCell codeIndex,
@@ -49,10 +43,8 @@ contract Nft is TIP4_1Nft, TIP4_3Nft, TIP4_4Nft {
     ) public {
         tvm.accept();
     
-        _author = author;
         _name = name;
         _description = description;
-        _royalty = royalty;
     }
 
     function _beforeChangeOwner(
@@ -73,14 +65,6 @@ contract Nft is TIP4_1Nft, TIP4_3Nft, TIP4_4Nft {
         TIP4_3Nft._afterChangeOwner(oldOwner, newOwner, sendGasTo, callbacks);
     }
 
-    function author() public view responsible returns(address authorAddr) {
-        return {value: 0, flag: 64, bounce: false}(_author);
-    }
-
-    function royalty() public view responsible returns(uint8 royaltyValue) {
-        return {value: 0, flag: 64, bounce: false}(_royalty);
-    }
-
     function name() public view responsible returns(string nftName) {
         return {value: 0, flag: 64, bounce: false}(_name);
     }
@@ -91,6 +75,8 @@ contract Nft is TIP4_1Nft, TIP4_3Nft, TIP4_4Nft {
 
     function burn(address dest) external virtual onlyManager {
         tvm.accept();
+        Storage(_storage).destruct(dest);
+        ITokenBurned(_collection).onTokenBurned(_id, _owner, _manager);
         selfdestruct(dest);
     }
 

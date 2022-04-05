@@ -8,16 +8,18 @@ pragma AbiHeader pubkey;
 import '../../../contracts/TIP4_3/TIP4_3Collection.sol';
 import '../../../contracts/TIP4_4/TIP4_4Collection.sol';
 import '../../../contracts/access/OwnableExternal.sol';
+import './interfaces/ITokenBurned.sol';
 import './Nft.sol';
 
 
-contract Collection is TIP4_3Collection, TIP4_4Collection {
+contract Collection is TIP4_3Collection, TIP4_4Collection, ITokenBurned {
 
     /// _remainOnNft - the number of crystals that will remain after the entire mint 
     /// process is completed on the Nft contract
     uint128 _remainOnNft = 0.3 ever;
 
-    /// @dev нужно ли дублировать переменные из json?
+    uint128 _lastTokenId;
+
     /// Collection params
     string _name;
     string _symbol;
@@ -60,7 +62,8 @@ contract Collection is TIP4_3Collection, TIP4_4Collection {
         /// reserve original_balance + _mintingFee 
         tvm.rawReserve(_mintingFee, 4);
 
-        uint256 id = uint256(_totalSupply);
+        uint256 id = uint256(_lastTokenId);
+        _lastTokenId++;
         _totalSupply++;
 
         address storageAddr = _deployStorage(uploader, mimeType, chunksNum);
@@ -73,11 +76,9 @@ contract Collection is TIP4_3Collection, TIP4_4Collection {
         }(
             msg.sender,
             msg.sender,
-            msg.sender,
             _remainOnNft,
             name,
             description,
-            royalty,
             _indexDeployValue,
             _indexDestroyValue,
             _codeIndex,
@@ -95,9 +96,14 @@ contract Collection is TIP4_3Collection, TIP4_4Collection {
     }
 
     function withdraw(address dest, uint128 value) external pure onlyOwner {
-        require(address(this).balance - value >= 10 ever, CollectionErrors.value_is_greater_than_the_balance);
         tvm.accept();
         dest.transfer(value, true);
+    }
+    
+    function onTokenBurned(uint256 id, address owner, address manager) external override {
+        require(msg.sender == _resolveNft(id));
+        emit NftBurned(id, msg.sender, owner, manager);
+        _totalSupply--;
     }
 
     function setRemainOnNft(uint128 remainOnNft) external virtual onlyOwner {
@@ -110,6 +116,10 @@ contract Collection is TIP4_3Collection, TIP4_4Collection {
 
     function symbol() external view responsible returns(string) {
         return {value: 0, flag: 64, bounce: false}(_symbol);
+    }
+
+    function setMintingFee(uint128 mintingFee) external virtual onlyOwner {
+        _mintingFee = mintingFee;
     }
 
     function mintingFee() external view responsible returns(uint128) {
