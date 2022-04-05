@@ -10,23 +10,16 @@ pragma AbiHeader pubkey;
 import '../../../contracts/TIP4_1/TIP4_1Nft.sol';
 import '../../../contracts/TIP4_2/TIP4_2Nft.sol';
 import '../../../contracts/TIP4_3/TIP4_3Nft.sol';
+import './interfaces/ITokenBurned.sol';
 
 
 contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
 
-    /// Author address
-    address _author;
-
-    /// Mapping royalty recipient to royalty value
-    uint8 _royalty;
-
     constructor(
         address owner,
         address sendGasTo,
-        address author,
         uint128 remainOnNft,
         string json,
-        uint8 royalty,
         uint128 indexDeployValue,
         uint128 indexDestroyValue,
         TvmCell codeIndex
@@ -42,9 +35,6 @@ contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
         codeIndex
     ) public {
         tvm.accept();
-
-        _author = author;
-        _royalty = royalty;
     }
 
     function _beforeChangeOwner(
@@ -65,16 +55,9 @@ contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
         TIP4_3Nft._afterChangeOwner(oldOwner, newOwner, sendGasTo, callbacks);
     }
 
-    function author() public view responsible returns(address authorAddr) {
-        return {value: 0, flag: 64, bounce: false}(_author);
-    }
-
-    function royalty() public view responsible returns(uint8 royaltyValue) {
-        return {value: 0, flag: 64, bounce: false}(_royalty);
-    }
-
     function burn(address dest) external virtual onlyManager {
         tvm.accept();
+        ITokenBurned(_collection).onTokenBurned(_id, _owner, _manager);
         selfdestruct(dest);
     }
 
