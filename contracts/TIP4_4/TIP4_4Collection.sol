@@ -59,7 +59,7 @@ abstract contract TIP4_4Collection is TIP4_1Collection, ITIP4_4Collection {
         string mimeType,
         uint128 chunksNum
     ) internal virtual returns(address newStorage) {
-        address nft = resolveNft(address(this), uint256(_totalSupply));
+        address nft = _resolveNft(uint256(_totalSupply));
         newStorage = new Storage{
             code : _codeStorage,
             value : _storageDeployValue,
