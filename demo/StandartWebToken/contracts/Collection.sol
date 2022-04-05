@@ -6,10 +6,12 @@ pragma AbiHeader pubkey;
 
 
 import '../../../contracts/TIP4_2/TIP4_2Collection.sol';
+import '../../../contracts/TIP4_3/TIP4_3Collection.sol';
 import '../../../contracts/access/OwnableExternal.sol';
 import './Nft.sol';
 
-contract Collection is TIP4_2Collection, OwnableExternal {
+
+contract Collection is TIP4_2Collection, TIP4_3Collection {
 
     /// _remainOnNft - the number of crystals that will remain after the entire mint 
     /// process is completed on the Nft contract
@@ -23,17 +25,21 @@ contract Collection is TIP4_2Collection, OwnableExternal {
 
     constructor(
         TvmCell codeNft, 
+        TvmCell codeIndex,
+        TvmCell codeIndexBasis,
         uint256 ownerPubkey,
         string json,
         string name,
         string symbol,
         uint128 mintingFee
-    ) OwnableExternal(
-        ownerPubkey
     ) TIP4_1Collection (
         codeNft
     ) TIP4_2Collection (
         json
+    ) TIP4_3Collection (
+        codeIndex,
+        codeIndexBasis,
+        ownerPubkey
     ) public {
         tvm.accept();
 
@@ -46,7 +52,7 @@ contract Collection is TIP4_2Collection, OwnableExternal {
         string json,
         uint8 royalty
     ) external virtual {
-        require(msg.value > _remainOnNft + _mintingFee, CollectionErrors.value_is_less_than_required);
+        require(msg.value > _remainOnNft + _mintingFee + (2 * _indexDeployValue), CollectionErrors.value_is_less_than_required);
         /// reserve original_balance + _mintingFee 
         tvm.rawReserve(_mintingFee, 4);
 
@@ -65,7 +71,10 @@ contract Collection is TIP4_2Collection, OwnableExternal {
             msg.sender,
             _remainOnNft,
             json,
-            royalty
+            royalty,
+            _indexDeployValue,
+            _indexDestroyValue,
+            _codeIndex
         ); 
 
         emit NftCreated(
@@ -103,7 +112,7 @@ contract Collection is TIP4_2Collection, OwnableExternal {
     function _buildNftState(
         TvmCell code,
         uint256 id
-    ) internal virtual override pure returns (TvmCell) {
+    ) internal virtual override(TIP4_2Collection, TIP4_3Collection) pure returns (TvmCell) {
         return tvm.buildStateInit({
             contr: Nft,
             varInit: {_id: id},
