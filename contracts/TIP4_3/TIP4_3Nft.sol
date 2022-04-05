@@ -42,13 +42,21 @@ abstract contract TIP4_3Nft is TIP4_1Nft, ITIP4_3NFT {
         _deployIndex();
     }
 
-    function changeOwner(
-        address newOwner, 
+    function _beforeChangeOwner(
+        address oldOwner, 
+        address newOwner,
         address sendGasTo, 
         mapping(address => CallbackParams) callbacks
-    ) public virtual override onlyManager {
+    ) internal virtual override {
         _destructIndex(sendGasTo);
-        super.changeOwner(newOwner, sendGasTo, callbacks);
+    }   
+
+    function _afterChangeOwner(
+        address oldOwner, 
+        address newOwner,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual override {
         _deployIndex();
     }
 
@@ -108,13 +116,13 @@ abstract contract TIP4_3Nft is TIP4_1Nft, ITIP4_3NFT {
     }
 
     function setIndexDeployValue(uint128 indexDeployValue) public onlyManager {
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
         _indexDeployValue = indexDeployValue;
         msg.sender.transfer({value: 0, flag: 128});
     }
 
     function setIndexDestroyValue(uint128 indexDestroyValue) public onlyManager {
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
         _indexDestroyValue = indexDestroyValue;
         msg.sender.transfer({value: 0, flag: 128});
     }

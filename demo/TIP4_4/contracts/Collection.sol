@@ -36,7 +36,7 @@ contract Collection is TIP4_4Collection, OwnableExternal {
         uint128 chunksNum
     ) external virtual {
         require(msg.value > _remainOnNft + _storageDeployValue, CollectionErrors.value_is_less_than_required);
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
 
         address storageAddr = _deployStorage(uploader, mimeType, chunksNum);
         TvmCell codeNft = _buildNftCode(address(this));

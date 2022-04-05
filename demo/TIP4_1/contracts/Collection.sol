@@ -28,7 +28,7 @@ contract Collection is TIP4_1Collection, OwnableExternal {
 
     function mintNft() external virtual {
         require(msg.value > _remainOnNft + 0.1 ton, CollectionErrors.value_is_less_than_required);
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
 
         uint256 id = uint256(_totalSupply);
         _totalSupply++;

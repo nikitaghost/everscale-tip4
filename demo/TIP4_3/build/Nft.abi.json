@@ -17,16 +17,6 @@
 			]
 		},
 		{
-			"name": "changeOwner",
-			"inputs": [
-				{"name":"newOwner","type":"address"},
-				{"name":"sendGasTo","type":"address"},
-				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "indexCode",
 			"inputs": [
 				{"name":"answerId","type":"uint32"}
@@ -87,6 +77,16 @@
 			],
 			"outputs": [
 				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "changeOwner",
+			"inputs": [
+				{"name":"newOwner","type":"address"},
+				{"name":"sendGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
+			],
+			"outputs": [
 			]
 		},
 		{

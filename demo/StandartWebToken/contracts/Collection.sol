@@ -47,7 +47,8 @@ contract Collection is TIP4_2Collection, OwnableExternal {
         uint8 royalty
     ) external virtual {
         require(msg.value > _remainOnNft + _mintingFee, CollectionErrors.value_is_less_than_required);
-        tvm.rawReserve(msg.value - _mintingFee, 1);
+        /// reserve original_balance + _mintingFee 
+        tvm.rawReserve(_mintingFee, 4);
 
         uint256 id = uint256(_totalSupply);
         _totalSupply++;

@@ -90,10 +90,14 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         address sendGasTo, 
         mapping(address => CallbackParams) callbacks
     ) public virtual override onlyManager {
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
+
+        _beforeChangeOwner(_owner, newOwner, sendGasTo, callbacks);
 
         address oldOwner = _owner;
         _changeOwner(newOwner);
+
+        _afterChangeOwner(oldOwner, newOwner, sendGasTo, callbacks);
 
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeOwner(dest).onNftChangeOwner{
@@ -145,10 +149,14 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
         address sendGasTo, 
         mapping(address => CallbackParams) callbacks
     ) external virtual override onlyManager {
-        tvm.rawReserve(msg.value, 1);
+        tvm.rawReserve(0, 4);
+
+        _beforeChangeManager(_manager, newManager, sendGasTo, callbacks);
 
         address oldManager = _manager;
         _changeManager(newManager);
+
+        _afterChangeManager(oldManager, newManager, sendGasTo, callbacks);
 
         for ((address dest, CallbackParams p) : callbacks) {
             INftChangeManager(dest).onNftChangeManager{
@@ -199,6 +207,34 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
             _collection
         );
     }
+
+    function _beforeChangeOwner(
+        address oldOwner, 
+        address newOwner,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual {}   
+
+    function _afterChangeOwner(
+        address oldOwner, 
+        address newOwner,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual {}
+
+    function _beforeChangeManager(
+        address oldManager, 
+        address newManager,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual {}   
+
+    function _afterChangeManager(
+        address oldManager, 
+        address newManager,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual {}
 
     modifier onlyManager virtual {
         require(msg.sender == _manager, NftErrors.sender_is_not_manager);

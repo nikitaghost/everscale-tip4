@@ -31,13 +31,22 @@ contract Nft is TIP4_1Nft, TIP4_3Nft {
         tvm.accept();
     }
 
-    function changeOwner(
-        address newOwner, 
+    function _beforeChangeOwner(
+        address oldOwner, 
+        address newOwner,
         address sendGasTo, 
         mapping(address => CallbackParams) callbacks
-    ) public virtual override(TIP4_1Nft, TIP4_3Nft) onlyManager {
-        TIP4_3Nft.changeOwner(newOwner, sendGasTo, callbacks);
-    }
+    ) internal virtual override(TIP4_1Nft, TIP4_3Nft) {
+        TIP4_3Nft._beforeChangeOwner(oldOwner, newOwner, sendGasTo, callbacks);
+    }   
 
+    function _afterChangeOwner(
+        address oldOwner, 
+        address newOwner,
+        address sendGasTo, 
+        mapping(address => CallbackParams) callbacks
+    ) internal virtual override(TIP4_1Nft, TIP4_3Nft) {
+        TIP4_3Nft._afterChangeOwner(oldOwner, newOwner, sendGasTo, callbacks);
+    }
 
 }

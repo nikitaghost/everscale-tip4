@@ -29,7 +29,7 @@ contract IndexBasis is IIndexBasis {
         return {value: 0, flag: 64} _collection;
     }
 
-    /// @title This method used for destruct token, can be called only by nft
+    /// @notice This method used for destruct token, can be called only by nft
     /// @param gasReceiver - address where all crystals from the contract will be sent
     function destruct(address gasReceiver) override public onlyCollection {
         selfdestruct(gasReceiver);

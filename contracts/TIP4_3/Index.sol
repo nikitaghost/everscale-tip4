@@ -55,7 +55,7 @@ contract Index is IIndex {
         );
     }
 
-    /// @title This method used for destruct token, can be called only by nft
+    /// @notice This method used for destruct token, can be called only by nft
     /// @param gasReceiver - address where all crystals from the contract will be sent
     function destruct(address gasReceiver) override public {
         require(msg.sender == _nft, 101, "Method for NFT only");
