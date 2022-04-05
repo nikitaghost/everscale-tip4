@@ -63,12 +63,12 @@ contract TIP4_1Collection is ITIP4_1Collection, TIP6 {
     /// @param id Unique NFT id
     /// @return nft Returns address of NFT contract
     function nftAddress(uint256 id) external view virtual override responsible returns (address nft) {
-        return {value: 0, flag: 64, bounce: false} (resolveNft(id));
+        return {value: 0, flag: 64, bounce: false} (_resolveNft(id));
     }
 
     /// @notice Resolve nft address used addrRoot & nft id
     /// @param id Unique nft number
-    function resolveNft(
+    function _resolveNft(
         uint256 id
     ) internal virtual view returns (address nft) {
         TvmCell code = _buildNftCode(address(this));
