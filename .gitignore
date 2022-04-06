@@ -1,1 +1,4 @@
 *.code
+
+# Dependency directory
+node_modules
