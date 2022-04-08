@@ -9,7 +9,7 @@ interface INftChangeManager {
 
     /// @notice change owner callback processing
     /// @param id Unique NFT id
-    /// @param owner Address of nft owner before owner changed
+    /// @param owner Address of nft owner
     /// @param oldManager Address of nft manager before manager changed
     /// @param newManager Address of new nft manager
     /// @param collection Address of collection smart contract that mint the NFT
