@@ -163,7 +163,7 @@ contract TIP4_1Nft is ITIP4_1NFT, TIP6 {
                 value: p.value,
                 flag: 0 + 1,
                 bounce: false
-            }(_id, _owner, oldManager, _owner, newManager, _collection, sendGasTo, p.payload);
+            }(_id, _owner, oldManager, newManager, _collection, sendGasTo, p.payload);
         }
 
         if (sendGasTo.value != 0) {

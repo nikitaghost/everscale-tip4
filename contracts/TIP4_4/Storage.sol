@@ -42,7 +42,6 @@ contract Storage is ITIP4_4Storage {
         require(id < _chunksNum);
         require(!_chunks.exists(id));
         require(_chunksUploaded < _chunksNum);
-        require(id < _chunksNum);
         tvm.rawReserve(0, msg.value);
         
         _chunks[id] = chunk;
