@@ -1,0 +1,15 @@
+{
+  "name": "tip4_1",
+  "version": "1.0.0",
+  "description": "TIP4_1 demo",
+  "scripts": {
+    "stdlib-fix": "",
+    "compile": "locklift build --config locklift.config.js",
+    "dev": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "locklift": "git+https://github.com/broxus/ton-locklift.git"
+  }
+}
